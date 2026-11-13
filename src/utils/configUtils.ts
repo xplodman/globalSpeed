@@ -1,4 +1,5 @@
 import type { CommandName } from "@/defaults/commands"
+import { MAX_SPEED } from "@/defaults/constants"
 import { svgFilterIsValid } from "@/defaults/filters"
 import { SVG_FILTER_ADDITIONAL } from "@/defaults/svgFilterAdditional"
 import { gvar } from "@/globalVar"
@@ -26,7 +27,7 @@ import { supportsItc } from "./itcUtils"
 import { fetchView, pushView } from "./state"
 
 export function conformSpeed(speed: number, rounding = 2) {
-	return clamp(0.07, 16, round(speed, rounding))
+	return clamp(0.07, MAX_SPEED, round(speed, rounding))
 }
 
 export function formatSpeed(speed: number, snip = false) {

@@ -8,7 +8,7 @@ import { Button } from "@/comps/ui/button"
 import { getDefaultSpeedPresets } from "@/defaults/constants"
 import { gvar } from "@/globalVar"
 import { clamp, cn, isMobile } from "@/utils/helper"
-import { MAX_SPEED_CHROMIUM, MIN_SPEED_CHROMIUM } from "../defaults/constants"
+import { MAX_SPEED, MIN_SPEED_CHROMIUM } from "../defaults/constants"
 import { useStateView } from "../hooks/useStateView"
 
 /** Step buttons and the speed input take a scaled down version of the preset padding. */
@@ -45,7 +45,7 @@ export function SpeedControl(props: SpeedControlProps) {
 	const smallStep = view.speedSmallStep || 0.01
 	const largeStep = view.speedBigStep || 0.1
 	const speedSliderMin = view.speedSlider?.min ?? MIN_SPEED_CHROMIUM
-	const speedSliderMax = view.speedSlider?.max ?? MAX_SPEED_CHROMIUM
+	const speedSliderMax = view.speedSlider?.max ?? MAX_SPEED
 	const speedSliderProgress = speedSliderMax === speedSliderMin ? 0 : clamp(0, 1, (props.speed - speedSliderMin) / (speedSliderMax - speedSliderMin))
 
 	let padding = (view.speedPresetPadding ?? 0) * (view.fontSize ?? 1)
@@ -79,7 +79,7 @@ export function SpeedControl(props: SpeedControlProps) {
 				onWheel={(e) => {
 					if (e.deltaMode !== WheelEvent.DOM_DELTA_PIXEL) return
 					const speedDelta = (e.deltaY / 1080) * -0.15
-					props.onChange(clamp(MIN_SPEED_CHROMIUM, MAX_SPEED_CHROMIUM, props.speed + speedDelta))
+					props.onChange(clamp(MIN_SPEED_CHROMIUM, MAX_SPEED, props.speed + speedDelta))
 				}}
 			>
 				<Button className="px-0 py-[calc(var(--padding)*0.75)]" onClick={() => handleAddDelta(-largeStep)}>
@@ -94,7 +94,7 @@ export function SpeedControl(props: SpeedControlProps) {
 					rounding={2}
 					noNull={true}
 					min={MIN_SPEED_CHROMIUM}
-					max={MAX_SPEED_CHROMIUM}
+					max={MAX_SPEED}
 					value={props.speed}
 					onChange={(v) => {
 						props.onChange(v)

@@ -1,7 +1,7 @@
 import { AdjustMode, Command, CommandGroup, Duration, Keybind, Trigger } from "../types"
 import { IS_FIREFOX_BUILD } from "../utils/buildFlags"
 import { getPopupSize, isMobile, randomId } from "../utils/helper"
-import { MAX_SPEED_CHROMIUM, MIN_SPEED_CHROMIUM } from "./constants"
+import { MAX_SPEED, MIN_SPEED_CHROMIUM } from "./constants"
 import { filterInfos } from "./filters"
 
 export type CommandName =
@@ -98,7 +98,7 @@ export let commandInfos: { [key in CommandName]: Command } = {
 		hasFeedback: true,
 		ref: {
 			min: MIN_SPEED_CHROMIUM,
-			max: MAX_SPEED_CHROMIUM,
+			max: MAX_SPEED,
 			step: 0.1,
 			default: 1,
 			sliderMin: 0.5,

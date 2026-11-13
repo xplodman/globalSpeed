@@ -1,7 +1,8 @@
 import { type CinemaInit } from "@/types"
 
 export const MIN_SPEED_CHROMIUM = 0.07
-export const MAX_SPEED_CHROMIUM = 16
+export const MAX_SPEED_CHROMIUM = 16 // native HTMLMediaElement.playbackRate limit
+export const MAX_SPEED = 100 // what the UI/config allows; above 16x is emulated by seeking
 
 export const DEFAULT_LONG_PRESS_THRESHOLD = 350
 export const DEFAULT_DOUBLE_TAP_THRESHOLD = 250

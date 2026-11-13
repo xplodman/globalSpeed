@@ -8,6 +8,7 @@ import { clamp, produce } from "@/utils/helper"
 import { ModalBase, ModalContent } from "../comps/ModalBase"
 import { NumericInput } from "../comps/NumericInput"
 import { useStateView } from "../hooks/useStateView"
+import { MAX_SPEED } from "../defaults/constants"
 import { OptionField } from "./OptionField"
 
 type Props = {
@@ -111,7 +112,7 @@ export function SpeedPresetModal(props: Props) {
 							value={v}
 							onChange={(t) => handlePresetChange(i, t)}
 							min={0.07}
-							max={16}
+							max={MAX_SPEED}
 							noNull={true}
 						/>
 					))}

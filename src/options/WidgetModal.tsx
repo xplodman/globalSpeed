@@ -7,7 +7,7 @@ import { Select } from "@/comps/Select"
 import { SliderMicro } from "@/comps/SliderMicro"
 import { Toggle } from "@/comps/Toggle"
 import { Button } from "@/comps/ui/button"
-import { MAX_SPEED_CHROMIUM, MIN_SPEED_CHROMIUM } from "@/defaults/constants"
+import { MAX_SPEED, MIN_SPEED_CHROMIUM } from "@/defaults/constants"
 import { gvar } from "@/globalVar"
 import { produce, randomId } from "@/utils/helper"
 import { ModalBase, ModalContent } from "../comps/ModalBase"
@@ -176,7 +176,7 @@ export function WidgetModal(props: Props) {
 							rounding={2}
 							noNull={true}
 							min={MIN_SPEED_CHROMIUM}
-							max={MAX_SPEED_CHROMIUM}
+							max={MAX_SPEED}
 							value={init.mainActionSpeed ?? 3}
 							onChange={(v) => {
 								setView({

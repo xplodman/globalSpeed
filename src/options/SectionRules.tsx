@@ -18,6 +18,7 @@ import { URLRule, URLStrictness } from "../types"
 import { DevWarning } from "./DevWarning"
 import { KebabList, KebabListProps } from "./KebabList"
 import { List } from "./List"
+import { MAX_SPEED } from "@/defaults/constants"
 import { ListItem } from "./ListItem"
 import { OptionsSection } from "./OptionsSection"
 import { URLModal } from "./URLModal"
@@ -231,7 +232,7 @@ export function Rule(props: RuleProps) {
 						className="w-15"
 						noNull={true}
 						min={1 / 16}
-						max={16}
+						max={MAX_SPEED}
 						value={rule.overrideSpeed ?? 1}
 						onChange={(v) => {
 							onChange(

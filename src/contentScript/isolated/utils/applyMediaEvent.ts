@@ -1,3 +1,4 @@
+import { MAX_SPEED_CHROMIUM } from "@/defaults/constants"
 import { gvar } from "@/globalVar"
 import { setSession } from "@/utils/browserUtils"
 import { hashWithStoredSalt } from "@/utils/hash"
@@ -254,6 +255,43 @@ const RATE_LIMIT_PERIOD = 1000 * 20
 const RATE_LIMIT = 1000
 const RATE_LIMIT_MAX_VIOLATIONS = 3
 
+// Chromium rejects playbackRate > 16. For higher targets, play at 16x and seek forward on a timer.
+const TURBO_TICK_MS = 250
+const turboTargets = new Map<HTMLMediaElement, number>()
+let turboTimer: number | undefined
+
+function turboTick() {
+	for (const [elem, speed] of turboTargets) {
+		if (elem.readyState === 0) {
+			turboTargets.delete(elem)
+			continue
+		}
+		if (elem.paused || elem.ended || !Number.isFinite(elem.duration)) continue
+		try {
+			// pages (e.g. SoundCloud) may reset the rate behind our back
+			if (elem.playbackRate !== MAX_SPEED_CHROMIUM) elem.playbackRate = MAX_SPEED_CHROMIUM
+		} catch (err) {}
+		const extra = (speed - MAX_SPEED_CHROMIUM) * (TURBO_TICK_MS / 1000)
+		elem.currentTime = Math.min(elem.currentTime + extra, elem.duration - 0.5)
+	}
+	if (!turboTargets.size) stopTurbo()
+}
+
+function stopTurbo() {
+	if (turboTimer === undefined) return
+	clearInterval(turboTimer)
+	turboTimer = undefined
+}
+
+function setTurbo(elem: HTMLMediaElement, speed: number) {
+	if (speed > MAX_SPEED_CHROMIUM) {
+		turboTargets.set(elem, speed)
+		turboTimer ??= window.setInterval(turboTick, TURBO_TICK_MS)
+	} else if (turboTargets.delete(elem) && !turboTargets.size) {
+		stopTurbo()
+	}
+}
+
 class SetPlaybackRate {
 	static checkLimited(elem: HTMLMediaElement) {
 		if (!elem || elem.gsRateBanned) return true
@@ -283,7 +321,8 @@ class SetPlaybackRate {
 	}
 	static _set(elem: HTMLMediaElement, value: number, freePitch?: boolean) {
 		if (SetPlaybackRate.checkLimited(elem)) return
-		value = clamp(0.0625, 16, value)
+		setTurbo(elem, value)
+		value = clamp(0.0625, MAX_SPEED_CHROMIUM, value)
 		try {
 			if (elem.playbackRate.toFixed(3) !== value.toFixed(3)) {
 				elem.playbackRate = value

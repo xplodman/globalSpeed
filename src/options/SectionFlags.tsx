@@ -18,7 +18,7 @@ import { Context, CONTEXT_KEYS, InitialContext, StateView } from "@/types"
 import { clamp, cn, isMobile, produce } from "@/utils/helper"
 import { isPromoShowing, PROMO_VIEW_KEYS } from "@/utils/promoUtils"
 import { fetchView } from "@/utils/state"
-import { MAX_SPEED_CHROMIUM, MIN_SPEED_CHROMIUM } from "../defaults/constants"
+import { MAX_SPEED, MIN_SPEED_CHROMIUM } from "../defaults/constants"
 import { SetView, useStateView } from "../hooks/useStateView"
 import { getValidLocale, LOCALE_MAP } from "../utils/gsm"
 import { IndicatorModal } from "./IndicatorModal"
@@ -353,7 +353,7 @@ export function SectionFlags(props: {}) {
 						<div className="grid grid-cols-[8rem_max-content] gap-x-1.25">
 							<Minmax
 								realMin={MIN_SPEED_CHROMIUM}
-								realMax={MAX_SPEED_CHROMIUM}
+								realMax={MAX_SPEED}
 								min={view.speedSlider?.min ?? defaultSlider.min}
 								max={view.speedSlider?.max ?? defaultSlider.max}
 								onChange={(min: number, max: number) => {
